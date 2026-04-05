@@ -1,42 +1,50 @@
 
 const express = require("express")
 const app = express()
+const  connectDB =  require("./config/database")
+const User = require("./models/user")
 
-// app.use("/", (req, res)=>{
-//     res.send("Hello from the Server ")
-// })
+app.post("/signup", async (req, res)=>{
+    const user = new User({
+        firstName :"Hemanth",
+    lastName:"Kumar",
+    emailId:"hemanthkumarkv153@gmail.com",
+    password:"Hemanth@#1996",
+    age:29,
+    gender:"Mele",
 
-// http://localhost:3000/hello ----->  Hello from the Server
-// http://localhost:3000/hello/2 ----->  Hello from the Server
+    })
 
-app.use("/hello/2", (req, res)=>{
-    res.send("Hello - 2")
+    try{
+         await user.save()
+
+      res.send("User added Successfully")
+    }catch(err){
+        res.status(400).send("Erros to save the database:" + err.massage)
+    }
+
+
 })
 
-// http://localhost:3000/hello/2  --->  Hello - 2
-// http://localhost:3000/hello ---> Hello - 1
 
 
-app.use("/hello", (req, res)=>{
-    res.send("Hello - 1")
+connectDB().then(()=>{
+    console.log("Data base connection Successfully")
+    
+
+
 })
-
-
-app.get("/user/:userId/:password", (req, res)=>{
-    console.log(req.params)
-    res.send("Hello - 2")
+.catch((err)=>{
+    console.log("Data base not connected ")
 })
-
-// http://localhost:3000/user/10/Hemanth@#1996
-// o/p: Hello - 2
-
 
 app.listen(3000, ()=>{
     console.log("Server running of the port 3000")
 })
 
 
-// http://localhost:3000/hello/2 --->
 
 
-console.log("Hemanth kumar kv")
+
+
+
